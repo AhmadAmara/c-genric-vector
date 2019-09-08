@@ -35,12 +35,12 @@ Vector* vectorCreate(size_t size, size_t data_size){
 	return v;
 }
 
-/*void vectorDestroy(Vector **vector){
+void vectorDestroy(Vector **vector){
 	free((*vector)->m_arr);
 	free(*vector);
 	*vector = NULL;
 }
-*/
+
 
 ErrorCode vectorPush(Vector *vector, T value)
 {
@@ -132,7 +132,7 @@ ErrorCode vectorRemove(Vector *vector, size_t index, T res)
 }
 
 
-ErrorCode vectorGetElement(const Vector *vector, size_t index, T res)
+ErrorCode vectorGetElement(const Vector *vector, size_t index, T value)
 {
 	if(vector == NULL)
 	{
@@ -145,7 +145,7 @@ ErrorCode vectorGetElement(const Vector *vector, size_t index, T res)
 	}
 
 /*	*res = *(vector->m_arr + index);
-*/	memcpy(res ,((char*)vector->m_arr) + (index * vector->data_size), vector->data_size);
+*/	memcpy(value ,((char*)vector->m_arr) + (index * vector->data_size), vector->data_size);
 
 	return E_OK;
 
@@ -163,26 +163,29 @@ ErrorCode vectorSetElement(Vector *vector, size_t index, T value)
 		return E_BAD_INDEX;
 	}
 
-	*(vector->m_arr + index) = value;
+/*	*(vector->m_arr + index) = value;
+*/	memcpy(((char*)vector->m_arr) + (index * vector->data_size), value ,vector->data_size);
 
 	return E_OK;
 }
 
 
 
-/*size_t vectorCount(const Vector *vector, int value)
+size_t vectorCount(const Vector *vector, T value)
 {
 	size_t i, count;
 	count = 0;
 	for(i = 0; i < vector->size; i++)
 	{
-		if(*(vector->m_arr + i) == value)
+/*		if(*((char*)vector->m_arr + i * vector->data_size) == value) */
+		if(memcmp(((char*)vector->m_arr + i * vector->data_size), value, vector->data_size) == 0)
+		
 		{
 			count++;
 		}
 	}
 	return count;
-}*/
+}
 
 
 void vectorPrint(Vector *vector, printFunc func)
@@ -208,7 +211,7 @@ void printfloat(size_t idx, void *v)
 	printf("vector[%lu] = %f\n",idx, *((float *)v));
 }
 
-
+/*
 int main()
 {
 	size_t i;
@@ -246,8 +249,62 @@ int main()
 	vectorGetElement(intVector, 2, res);
 	printf("vectorGetElement 2 = %d\n",*(int *)res );
 
+
+	*(int* )res = 5;
+	vectorSetElement(intVector, 3, res);
+	printf("after set 3 to 5\n");
+	vectorPrint(intVector, printInt);
+	printf("size of vector = %lu\n", vectorGetSize(intVector));
+		printf("vectorGetCapacity = %lu\n", vectorGetCapacity(intVector));
+
+	*(int* )res = 100;
+	vectorInsert(intVector, res, 1);
+		vectorPrint(intVector, printInt);
+
+		printf("size of vector = %lu\n", vectorGetSize(intVector));
+			printf("vectorGetCapacity = %lu\n", vectorGetCapacity(intVector));
+
+
+	vectorInsert(intVector, res, 1);
+		vectorPrint(intVector, printInt);
+
+	printf("size of vector = %lu\n", vectorGetSize(intVector));
+	printf("vectorGetCapacity = %lu\n", vectorGetCapacity(intVector));
+
+	vectorInsert(intVector, res, 1);
+		vectorPrint(intVector, printInt);
+
+	printf("size of vector = %lu\n", vectorGetSize(intVector));
+	printf("vectorGetCapacity = %lu\n", vectorGetCapacity(intVector));
+
+
+	vectorInsert(intVector, res, 1);
+		vectorPrint(intVector, printInt);
+
+
+	vectorInsert(intVector, res, 1);
+		vectorPrint(intVector, printInt);
+
+	printf("size of vector = %lu\n", vectorGetSize(intVector));
+	printf("vectorGetCapacity = %lu\n", vectorGetCapacity(intVector));
+
+	printf("size of vector = %lu\n", vectorGetSize(intVector));
+	printf("vectorGetCapacity = %lu\n", vectorGetCapacity(intVector));
+
+	printf("ammount of 100 values = %lu\n", vectorCount(intVector, res));
+	*(int* )res = 1;
+	printf("ammount of 1 values = %lu\n", vectorCount(intVector, res));
+		*(int* )res = 5;
+
+	printf("ammount of 5 values = %lu\n", vectorCount(intVector, res));
+
+	vectorDestroy(&intVector);
+	free(res);
+
+
 	a = 0.0f;
 	floatVector = vectorCreate(5, sizeof(float));
+	
 	for (i = 0; i < 5; ++i){
 		vectorPush(floatVector, &a);
 		a++; 
@@ -260,8 +317,10 @@ int main()
 	printf("size of vector = %lu\n", vectorGetSize(floatVector));
 	printf("vectorGetCapacity = %lu\n", vectorGetCapacity(floatVector));
 
+	vectorDestroy(&floatVector);
+
 	return 0;
-}
+}*/
 
 /*int main()
 {
