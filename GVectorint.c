@@ -36,9 +36,17 @@ Vector* vectorCreate(size_t size, size_t data_size){
 }
 
 void vectorDestroy(Vector **vector){
+	if( vector != NULL && (*vector) != NULL)
+	{
 	free((*vector)->m_arr);
 	free(*vector);
 	*vector = NULL;
+	}
+	else
+	{
+		return;
+	}
+
 }
 
 
@@ -211,7 +219,7 @@ void printfloat(size_t idx, void *v)
 	printf("vector[%lu] = %f\n",idx, *((float *)v));
 }
 
-/*
+
 int main()
 {
 	size_t i;
@@ -304,7 +312,7 @@ int main()
 
 	a = 0.0f;
 	floatVector = vectorCreate(5, sizeof(float));
-	
+
 	for (i = 0; i < 5; ++i){
 		vectorPush(floatVector, &a);
 		a++; 
@@ -320,7 +328,7 @@ int main()
 	vectorDestroy(&floatVector);
 
 	return 0;
-}*/
+}
 
 /*int main()
 {
