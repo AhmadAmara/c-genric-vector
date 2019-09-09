@@ -3,22 +3,26 @@
 
 ErrorCode dupVector(Vector *vector)
 {
+	T temp;
 	if(vector == NULL)
 	{
 		return E_NULL_PTR;
 	}
-	printf(" ***************Fat dupVector****************8\n");
-
-	vector->m_arr = realloc(vector->m_arr, vector->capacity * 2 * vector->data_size);
-
-	if(NULL != vector->m_arr)
+/*	printf(" ***************Fat dupVector****************8\n");
+*/
+	temp =  realloc(vector->m_arr, vector->capacity * 2 * vector->data_size);
+/*	vector->m_arr = realloc(vector->m_arr, vector->capacity * 2 * vector->data_size);
+*/
+	if(NULL != temp)
 	{
+		vector->m_arr = temp;
 		vector->capacity *= 2;
 		return E_OK;
 
 	}
 	else 
 	{
+		
 		return E_ALLOCATION_ERROR;
 	}
 
@@ -196,7 +200,7 @@ size_t vectorCount(const Vector *vector, T value)
 }
 
 
-void vectorPrint(Vector *vector, printFunc func)
+void vectorPrint(Vector *vector, actionFunc func)
 {
 	size_t i;
 
@@ -219,6 +223,16 @@ void printfloat(size_t idx, void *v)
 	printf("vector[%lu] = %f\n",idx, *((float *)v));
 }
 
+
+size_t vectorForEach(Vector* vector, actionFunc func)
+{
+	size_t i;
+	for(i = 0; i < vector->size; i++)
+	{
+		func(i, (char*)(vector->m_arr) + (i * vector->data_size));
+	}
+	return E_OK;
+}
 
 int main()
 {

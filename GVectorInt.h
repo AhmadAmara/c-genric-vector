@@ -26,7 +26,7 @@ struct Vector{
 
 typedef struct Vector Vector;
 
-typedef void (*printFunc)(size_t idx, T v);
+typedef void (*actionFunc)(size_t idx, T v);
 
 
 Vector* vectorCreate(size_t size, size_t data_size);
@@ -56,12 +56,12 @@ size_t vectorGetCapacity(const Vector *vector){return vector->capacity;}
 /* Counts how many instances of a given value there are. */
 size_t vectorCount(const Vector *vector, T value);
 
-/*  size_t vectorForEach(Vector* vector, actionFunc); */
+size_t vectorForEach(Vector* vector, actionFunc); 
 
 
 
 #ifdef _DEBUG
-void vectorPrint(Vector *vector, printFunc func);
+void vectorPrint(Vector *vector, actionFunc func);
 void printInt(size_t idx, void *v);
 
 #endif /* _DEBUG */
